@@ -167,7 +167,7 @@ static NSString* MIME_JPEG    = @"image/jpeg";
                  {
                      // Denied; show an alert
                      dispatch_async(dispatch_get_main_queue(), ^{
-                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] message:NSLocalizedString(@"Bạn chưa cấp quyền truy cập thư viện ảnh. Tính năng thay đổi ảnh đại diện sẽ không hoạt động. Bạn có thể thay đổi quyền trong phần Cài đặt của thiết bị.", nil) preferredStyle:UIAlertControllerStyleAlert];
+                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] message:NSLocalizedString(@"Để sử dụng tính năng thay đổi ảnh đại diện, bạn cần cấp quyền truy cập thư viện ảnh. Nếu bạn muốn thay đổi quyền sau này, vui lòng vào phần cài đặt của thiết bị.", nil) preferredStyle:UIAlertControllerStyleAlert];
                          [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                              [weakSelf sendNoPermissionResult:command.callbackId];
                          }]];
@@ -184,7 +184,7 @@ static NSString* MIME_JPEG    = @"image/jpeg";
                 if (!granted) {
                     // Denied; show an alert
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] message:NSLocalizedString(@"Bạn chưa cấp quyền truy cập thư viện ảnh. Tính năng thay đổi ảnh đại diện sẽ không hoạt động. Bạn có thể thay đổi quyền trong phần Cài đặt của thiết bị.", nil) preferredStyle:UIAlertControllerStyleAlert];
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] message:NSLocalizedString(@"Để sử dụng tính năng thay đổi ảnh đại diện, bạn cần cấp quyền truy cập thư viện ảnh. Nếu bạn muốn thay đổi quyền sau này, vui lòng vào phần cài đặt của thiết bị.", nil) preferredStyle:UIAlertControllerStyleAlert];
                         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             [weakSelf sendNoPermissionResult:command.callbackId];
                         }]];
