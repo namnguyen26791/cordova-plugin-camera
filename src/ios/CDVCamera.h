@@ -46,7 +46,7 @@ typedef NSUInteger CDVMediaType;
 @property (strong) NSNumber* quality;
 @property (assign) CDVDestinationType destinationType;
 @property (assign) UIImagePickerControllerSourceType sourceType;
-@property (nonatomic, strong) NSString* purpose;
+@property (assign) NSString* purpose;
 @property (assign) CGSize targetSize;
 @property (assign) CDVEncodingType encodingType;
 @property (assign) CDVMediaType mediaType;
