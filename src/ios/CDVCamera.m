@@ -75,7 +75,7 @@ static NSString* MIME_JPEG    = @"image/jpeg";
         pictureOptions.purpose = purposeValue;
     }
 
-    NSLog(@"Argument 10: %@", [[command argumentAtIndex:12] class]);
+    NSLog(@"All arguments: %@", command.arguments);
 
     NSNumber* targetWidth = [command argumentAtIndex:3 withDefault:nil];
     NSNumber* targetHeight = [command argumentAtIndex:4 withDefault:nil];
