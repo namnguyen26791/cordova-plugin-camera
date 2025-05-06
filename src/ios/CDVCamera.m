@@ -70,7 +70,8 @@ static NSString* MIME_JPEG    = @"image/jpeg";
     pictureOptions.quality = [command argumentAtIndex:0 withDefault:@(50)];
     pictureOptions.destinationType = [[command argumentAtIndex:1 withDefault:@(DestinationTypeFileUri)] unsignedIntegerValue];
     pictureOptions.sourceType = [[command argumentAtIndex:2 withDefault:@(UIImagePickerControllerSourceTypeCamera)] unsignedIntegerValue];
-    id purposeValue = [command argumentAtIndex:5];
+    NSDictionary* optionsDict = [command argumentAtIndex:0 withDefault:nil];
+    id purposeValue = [optionsDict objectForKey:@"purpose"];
     if ([purposeValue isKindOfClass:[NSString class]]) {
         pictureOptions.purpose = purposeValue;
     }
