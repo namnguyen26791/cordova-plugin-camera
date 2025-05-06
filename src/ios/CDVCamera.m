@@ -70,14 +70,12 @@ static NSString* MIME_JPEG    = @"image/jpeg";
     pictureOptions.quality = [command argumentAtIndex:0 withDefault:@(50)];
     pictureOptions.destinationType = [[command argumentAtIndex:1 withDefault:@(DestinationTypeFileUri)] unsignedIntegerValue];
     pictureOptions.sourceType = [[command argumentAtIndex:2 withDefault:@(UIImagePickerControllerSourceTypeCamera)] unsignedIntegerValue];
-    id optionsRaw = [command argumentAtIndex:10 withDefault:nil];
-    if ([optionsRaw isKindOfClass:[NSDictionary class]]) {
-        NSDictionary* optionsDict = (NSDictionary*) optionsRaw;
-        id purposeValue = [optionsDict objectForKey:@"purpose"];
-        if ([purposeValue isKindOfClass:[NSString class]]) {
-            pictureOptions.purpose = purposeValue;
-        }
+    id purposeValue = [command argumentAtIndex:12 withDefault:nil];
+    if ([purposeValue isKindOfClass:[NSString class]]) {
+        pictureOptions.purpose = purposeValue;
     }
+
+    NSLog(@"Argument 10: %@", [[command argumentAtIndex:12] class]);
 
     NSNumber* targetWidth = [command argumentAtIndex:3 withDefault:nil];
     NSNumber* targetHeight = [command argumentAtIndex:4 withDefault:nil];
