@@ -70,6 +70,10 @@ static NSString* MIME_JPEG    = @"image/jpeg";
     pictureOptions.quality = [command argumentAtIndex:0 withDefault:@(50)];
     pictureOptions.destinationType = [[command argumentAtIndex:1 withDefault:@(DestinationTypeFileUri)] unsignedIntegerValue];
     pictureOptions.sourceType = [[command argumentAtIndex:2 withDefault:@(UIImagePickerControllerSourceTypeCamera)] unsignedIntegerValue];
+    id purposeValue = [optionsDict objectForKey:@"purpose"];
+    if (purposeValue != nil && [purposeValue isKindOfClass:[NSString class]]) {
+        pictureOptions.purpose = purposeValue;
+    }
 
     NSNumber* targetWidth = [command argumentAtIndex:3 withDefault:nil];
     NSNumber* targetHeight = [command argumentAtIndex:4 withDefault:nil];
@@ -152,7 +156,7 @@ static NSString* MIME_JPEG    = @"image/jpeg";
         pictureOptions.cropToSize = NO;
 
         // Lấy purpose (avatar, upload_cccd, cover)
-        NSString* purpose = pictureOptions.extraOptions[@"purpose"];
+        NSString* purpose = pictureOptions.purpose;
         if (!purpose) {
             purpose = @"default";
         }
