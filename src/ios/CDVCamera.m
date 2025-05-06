@@ -151,6 +151,24 @@ static NSString* MIME_JPEG    = @"image/jpeg";
         pictureOptions.usesGeolocation = [weakSelf usesGeolocation];
         pictureOptions.cropToSize = NO;
 
+        // Lấy purpose (avatar, upload_cccd, cover)
+        NSString* purpose = pictureOptions.extraOptions[@"purpose"];
+        if (!purpose) {
+            purpose = @"default";
+        }
+
+        // Chọn message phù hợp
+        NSString* message;
+        if ([purpose isEqualToString:@"avatar"]) {
+            message = @"Để thay đổi ảnh đại diện, bạn cần cấp quyền truy cập vào thư viện ảnh hoặc camera.";
+        } else if ([purpose isEqualToString:@"upload_cccd"]) {
+            message = @"Để tải ảnh CCCD lên, bạn cần cấp quyền truy cập vào thư viện ảnh hoặc camera.";
+        } else if ([purpose isEqualToString:@"cover"]) {
+            message = @"Để thay đổi ảnh bìa, bạn cần cấp quyền truy cập vào thư viện ảnh hoặc camera.";
+        } else {
+            message = @"Ứng dụng cần quyền truy cập để sử dụng tính năng này.";
+        }
+
         BOOL hasCamera = [UIImagePickerController isSourceTypeAvailable:pictureOptions.sourceType];
         if (!hasCamera) {
             NSLog(@"Camera.getPicture: source type %lu not available.", (unsigned long)pictureOptions.sourceType);
@@ -159,33 +177,28 @@ static NSString* MIME_JPEG    = @"image/jpeg";
             return;
         }
 
-        // Validate the app has permission to access the camera
         if (pictureOptions.sourceType == UIImagePickerControllerSourceTypeCamera) {
-            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted)
-             {
-                 if (!granted)
-                 {
-                     // Denied; show an alert
-                     dispatch_async(dispatch_get_main_queue(), ^{
-                         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] message:NSLocalizedString(@"Để sử dụng tính năng thay đổi ảnh đại diện, bạn cần cấp quyền truy cập thư viện ảnh. Nếu bạn muốn thay đổi quyền sau này, vui lòng vào phần cài đặt của thiết bị.", nil) preferredStyle:UIAlertControllerStyleAlert];
-                         [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                             [weakSelf sendNoPermissionResult:command.callbackId];
-                         }]];
-                         [weakSelf.viewController presentViewController:alertController animated:YES completion:nil];
-                     });
-                 } else {
-                     dispatch_async(dispatch_get_main_queue(), ^{
-                         [weakSelf showCameraPicker:command.callbackId withOptions:pictureOptions];
-                     });
-                 }
-             }];
+            [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+                if (!granted) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] message:message preferredStyle:UIAlertControllerStyleAlert];
+                        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                            [weakSelf sendNoPermissionResult:command.callbackId];
+                        }]];
+                        [weakSelf.viewController presentViewController:alertController animated:YES completion:nil];
+                    });
+                } else {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf showCameraPicker:command.callbackId withOptions:pictureOptions];
+                    });
+                }
+            }];
         } else {
             [weakSelf options:pictureOptions requestPhotoPermissions:^(BOOL granted) {
                 if (!granted) {
-                    // Denied; show an alert
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] message:NSLocalizedString(@"Để sử dụng tính năng thay đổi ảnh đại diện, bạn cần cấp quyền truy cập thư viện ảnh. Nếu bạn muốn thay đổi quyền sau này, vui lòng vào phần cài đặt của thiết bị.", nil) preferredStyle:UIAlertControllerStyleAlert];
-                        [alertController addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"OK", nil) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] message:message preferredStyle:UIAlertControllerStyleAlert];
+                        [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                             [weakSelf sendNoPermissionResult:command.callbackId];
                         }]];
                         [weakSelf.viewController presentViewController:alertController animated:YES completion:nil];
@@ -199,6 +212,7 @@ static NSString* MIME_JPEG    = @"image/jpeg";
         }
     }];
 }
+
 
 - (void)showCameraPicker:(NSString*)callbackId withOptions:(CDVPictureOptions *) pictureOptions
 {
