@@ -76,6 +76,9 @@ static NSString* MIME_JPEG    = @"image/jpeg";
     }
 
     NSLog(@"All arguments: %@", command.arguments);
+    [command.arguments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSLog(@"Arg %lu: %@", (unsigned long)idx, obj);
+    }];
 
     NSNumber* targetWidth = [command argumentAtIndex:3 withDefault:nil];
     NSNumber* targetHeight = [command argumentAtIndex:4 withDefault:nil];
