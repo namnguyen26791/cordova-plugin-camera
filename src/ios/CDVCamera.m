@@ -70,13 +70,9 @@ static NSString* MIME_JPEG    = @"image/jpeg";
     pictureOptions.quality = [command argumentAtIndex:0 withDefault:@(50)];
     pictureOptions.destinationType = [[command argumentAtIndex:1 withDefault:@(DestinationTypeFileUri)] unsignedIntegerValue];
     pictureOptions.sourceType = [[command argumentAtIndex:2 withDefault:@(UIImagePickerControllerSourceTypeCamera)] unsignedIntegerValue];
-    id purposeValue = [command argumentAtIndex:3];
-    for (NSUInteger i = 3; i < command.arguments.count; i++) {
-        id arg = [command argumentAtIndex:i];
-        if ([arg isKindOfClass:[NSString class]]) {
-            pictureOptions.purpose = arg;
-            break;
-        }
+    id purposeValue = [command argumentAtIndex:5];
+    if ([purposeValue isKindOfClass:[NSString class]]) {
+        pictureOptions.purpose = purposeValue;
     }
 
     NSNumber* targetWidth = [command argumentAtIndex:3 withDefault:nil];
