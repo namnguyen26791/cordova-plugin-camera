@@ -46,7 +46,6 @@ typedef NSUInteger CDVMediaType;
 @property (strong) NSNumber* quality;
 @property (assign) CDVDestinationType destinationType;
 @property (assign) UIImagePickerControllerSourceType sourceType;
-@property (assign) NSString* purpose;
 @property (assign) CGSize targetSize;
 @property (assign) CDVEncodingType encodingType;
 @property (assign) CDVMediaType mediaType;
@@ -59,6 +58,8 @@ typedef NSUInteger CDVMediaType;
 @property (assign) BOOL popoverSupported;
 @property (assign) BOOL usesGeolocation;
 @property (assign) BOOL cropToSize;
+
+@property (nonatomic, strong) NSString* purpose;
 
 + (instancetype) createFromTakePictureArguments:(CDVInvokedUrlCommand*)command;
 
